@@ -14,7 +14,7 @@ device.name2=
 device.name3=
 device.name4=
 device.name5=
-supported.versions=
+supported.versions=11
 supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
@@ -32,6 +32,11 @@ RAMDISK_COMPRESSION=auto;
 PATCH_VBMETA_FLAG=auto;
 
 . tools/ak3-core.sh;
+
+vendor_ver=$(file_getprop /vendor/build.prop ro.vendor.build.version.release 2>/dev/null);
+if [ "$vendor_ver" ] && [ "$vendor_ver" != "11" ]; then
+	abort " " "Unsupported vendor (Android $vendor_ver). This kernel requires RUI2 / Android 11. Aborting...";
+fi;
 
 dump_boot;
 write_boot;
